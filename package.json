@@ -3,15 +3,61 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "main": "electron/main.mjs",
   "scripts": {
-    "dev": "tauri dev",
-    "build": "tauri build",
-    "build:windows": "tauri build --bundles msi,nsis",
-    "build:linux": "tauri build --bundles appimage,deb",
-    "build:macos": "tauri build --bundles dmg",
-    "tauri": "tauri"
+    "dev": "electron .",
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:windows": "electron-builder --win nsis msi",
+    "build:linux": "electron-builder --linux appimage deb",
+    "build:macos": "electron-builder --mac dmg"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2"
+    "electron": "^32.2.0",
+    "electron-builder": "^24.13.3"
+  },
+  "optionalDependencies": {
+    "keytar": "^7.9.0"
+  },
+  "build": {
+    "appId": "com.zoroofcoding.mailwidgets",
+    "productName": "Mail Widgets",
+    "directories": {
+      "buildResources": "build",
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "config",
+        "to": "config",
+        "filter": [
+          "google_oauth.json",
+          "google_oauth.example.json"
+        ]
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "msi"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    }
   }
 }

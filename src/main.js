@@ -1,10 +1,10 @@
-const { invoke } = window.__TAURI__.core;
-
 const REFRESH_MS = 5 * 60 * 1000;
 
 let statusEl;
 let listEl;
 let signInBtn;
+
+const api = window.mailWidgets;
 
 const fmtTime = (timestampMs) => {
   if (!timestampMs) return "";
@@ -37,7 +37,7 @@ const renderMessages = (messages) => {
     link.className = "message-link";
     link.addEventListener("click", async (event) => {
       event.preventDefault();
-      await invoke("open_external_url", { url: message.gmailUrl });
+      await api.openExternalUrl(message.gmailUrl);
     });
 
     const sender = document.createElement("div");
@@ -61,7 +61,7 @@ const renderMessages = (messages) => {
 const loadMessages = async () => {
   try {
     setStatus("Refreshing unread daily messages...");
-    const messages = await invoke("fetch_daily_unread_messages");
+    const messages = await api.fetchDailyUnreadMessages();
     renderMessages(messages);
     setStatus(`Updated ${new Date().toLocaleTimeString()}`);
   } catch (error) {
@@ -72,7 +72,7 @@ const loadMessages = async () => {
 const signIn = async () => {
   try {
     setStatus("Opening Google sign-in in your browser...");
-    await invoke("start_oauth_flow");
+    await api.startOAuthFlow();
     signInBtn.style.display = "none";
     await loadMessages();
   } catch (error) {
@@ -89,7 +89,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.querySelector("#refresh-btn").addEventListener("click", loadMessages);
 
   try {
-    const { authenticated } = await invoke("auth_status");
+    const { authenticated } = await api.authStatus();
     signInBtn.style.display = authenticated ? "none" : "inline-flex";
 
     if (authenticated) {

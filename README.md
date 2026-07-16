@@ -1,20 +1,20 @@
-# Mail Widgets (Windows Gmail Desktop Widget via Tauri)
+# Mail Widgets (Windows Gmail Desktop Widget via Electron)
 
-Lightweight Windows desktop Gmail widget built with Tauri + vanilla HTML/CSS/JS.
+Lightweight Windows desktop Gmail widget built with Electron + vanilla HTML/CSS/JS.
 
 ## Implemented behavior
 
 - Desktop-widget style window (Windows-focused)
-- Stays behind normal app windows
-- Hidden from Alt+Tab
-- Hidden from taskbar
-- Attempts to persist on desktop layer when **Win + D** is used
-- Gmail OAuth (`gmail.readonly`) with token storage in Windows credential store via `keyring`
+- Hidden from taskbar and Alt+Tab by using tool-window style
+- Attempts to persist on desktop layer and behind normal app windows
+- Re-applies desktop-layer styling periodically (helps after shell state changes such as **Win + D**)
+- Gmail OAuth (`gmail.readonly`) with token storage via Windows Credential Manager when `keytar` is available
+- Encrypted local token storage fallback when credential-manager integration is unavailable
 - Fetch filter: `is:unread newer_than:1d`
 - Auto-refresh every 5 minutes
 - Minimal transparent UI listing sender, subject, and time
 
-> Caveat: Desktop-layer behavior depends on Windows shell internals. This implementation uses Win32 parent/style interop and is intentionally Windows-only for MVP.
+> Caveat: Desktop-layer behavior depends on Windows shell internals. This implementation uses Win32 interop through PowerShell and is intentionally Windows-first.
 
 ## 1) Google Cloud OAuth setup
 
@@ -44,10 +44,7 @@ Alternative: set env var `MAIL_WIDGETS_OAUTH_CONFIG` to an absolute path of that
 
 Prerequisites:
 
-- Rust toolchain
 - Node.js + npm
-- Visual Studio C++ Build Tools
-- Microsoft Edge WebView2 runtime
 
 Commands:
 
@@ -65,18 +62,17 @@ npm run build
 Platform-focused installer commands:
 
 ```bash
-npm run build:windows   # msi + nsis
+npm run build:windows   # nsis + msi
 npm run build:linux     # appimage + deb
 npm run build:macos     # dmg
 ```
 
 Build output location:
 
-- `src-tauri/target/release/bundle/`
-- Share the generated installer file(s) from this folder through GitHub Releases so users can download and install easily.
+- `release/`
 
 ## 4) Security notes
 
 - Uses Google OAuth scope `https://www.googleapis.com/auth/gmail.readonly` (read-only mailbox access).
-- Tokens are persisted via the OS credential store (`keyring`) rather than plain frontend storage.
+- Prefers OS credential storage (`keytar`) and falls back to encrypted local storage.
 - Do not commit real OAuth credentials to git. Keep `config/google_oauth.json` local/private.
