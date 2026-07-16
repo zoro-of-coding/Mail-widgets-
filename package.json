@@ -2,15 +2,20 @@
   "name": "mail-widgets",
   "private": true,
   "version": "0.1.0",
+  "description": "Windows Gmail desktop widget",
+  "author": {
+    "name": "zoro-of-coding",
+    "email": "zoro-of-coding@users.noreply.github.com"
+  },
   "type": "module",
   "main": "electron/main.mjs",
   "scripts": {
     "dev": "electron .",
     "start": "electron .",
-    "build": "electron-builder",
-    "build:windows": "electron-builder --win nsis msi",
-    "build:linux": "electron-builder --linux appimage deb",
-    "build:macos": "electron-builder --mac dmg"
+    "build": "electron-builder --publish never",
+    "build:windows": "electron-builder --publish never --win nsis msi",
+    "build:linux": "electron-builder --publish never --linux appimage deb",
+    "build:macos": "electron-builder --publish never --mac dmg"
   },
   "devDependencies": {
     "electron": "^32.2.0",
@@ -49,12 +54,15 @@
       ]
     },
     "linux": {
+      "icon": "build/icon.png",
+      "category": "Utility",
       "target": [
         "AppImage",
         "deb"
       ]
     },
     "mac": {
+      "icon": "build/icon.png",
       "target": [
         "dmg"
       ]
