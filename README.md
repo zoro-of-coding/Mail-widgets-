@@ -62,6 +62,19 @@ Build installer/binary:
 npm run build
 ```
 
+Platform-focused installer commands:
+
+```bash
+npm run build:windows   # msi + nsis
+npm run build:linux     # appimage + deb
+npm run build:macos     # dmg
+```
+
+Build output location:
+
+- `src-tauri/target/release/bundle/`
+- Share the generated installer file(s) from this folder through GitHub Releases so users can download and install easily.
+
 ## 4) Security notes
 
 - Uses Google OAuth scope `https://www.googleapis.com/auth/gmail.readonly` (read-only mailbox access).
