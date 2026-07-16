@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Mail Widgets</title>
+    <script type="module" src="/main.js" defer></script>
+  </head>
+  <body>
+    <main class="widget">
+      <header class="widget-header">
+        <strong>Daily Gmail</strong>
+        <div class="actions">
+          <button id="signin-btn" class="btn btn-primary">Sign in</button>
+          <button id="refresh-btn" class="btn">Refresh</button>
+        </div>
+      </header>
+
+      <p id="status-text" class="status">Checking authentication...</p>
+      <ul id="messages" class="message-list"></ul>
+    </main>
+  </body>
+</html>
