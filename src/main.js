@@ -6,6 +6,20 @@ let signInBtn;
 
 const api = window.mailWidgets;
 
+const formatErrorMessage = (error) => {
+  const raw = error instanceof Error ? error.message : String(error ?? "Unknown error");
+  const cleaned = raw
+    .replace(/^Error invoking remote method '[^']+':\s*/i, "")
+    .replace(/^Error:\s*/i, "")
+    .trim();
+
+  if (/Missing OAuth config/i.test(cleaned)) {
+    return "Missing OAuth config. Add config/google_oauth.json with your Google client_id, then restart.";
+  }
+
+  return cleaned || "Unknown error";
+};
+
 const fmtTime = (timestampMs) => {
   if (!timestampMs) return "";
   const date = new Date(Number(timestampMs));
@@ -65,7 +79,7 @@ const loadMessages = async () => {
     renderMessages(messages);
     setStatus(`Updated ${new Date().toLocaleTimeString()}`);
   } catch (error) {
-    setStatus(`Unable to refresh: ${String(error)}`);
+    setStatus(`Unable to refresh: ${formatErrorMessage(error)}`);
   }
 };
 
@@ -76,7 +90,7 @@ const signIn = async () => {
     signInBtn.style.display = "none";
     await loadMessages();
   } catch (error) {
-    setStatus(`Sign-in failed: ${String(error)}`);
+    setStatus(`Sign-in failed: ${formatErrorMessage(error)}`);
   }
 };
 
@@ -98,7 +112,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       setStatus("Sign in to load unread Gmail from the last day.");
     }
   } catch (error) {
-    setStatus(`Startup failed: ${String(error)}`);
+    setStatus(`Startup failed: ${formatErrorMessage(error)}`);
   }
 
   setInterval(loadMessages, REFRESH_MS);
