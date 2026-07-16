@@ -28,6 +28,12 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "createUpdaterArtifacts": true,
+    "category": "Productivity",
+    "shortDescription": "Desktop Gmail widget for unread email updates.",
+    "longDescription": "Mail Widgets is a lightweight desktop Gmail widget that stays on the desktop layer and shows recent unread messages with periodic refresh.",
+    "publisher": "zoro-of-coding",
+    "copyright": "Copyright (c) zoro-of-coding",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
