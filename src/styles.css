@@ -19,6 +19,8 @@ body {
 .widget {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   padding: 12px;
   background: rgba(19, 23, 33, 0.48);
@@ -31,8 +33,9 @@ body {
 
 .widget-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 8px;
   font-size: 14px;
@@ -40,7 +43,9 @@ body {
 
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
+  margin-left: auto;
 }
 
 .btn {
@@ -61,6 +66,8 @@ body {
 .status {
   margin: 0 0 8px;
   font-size: 12px;
+  line-height: 1.4;
+  word-break: break-word;
   color: rgba(255, 255, 255, 0.84);
 }
 
@@ -71,7 +78,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: calc(100% - 56px);
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
 }
 
